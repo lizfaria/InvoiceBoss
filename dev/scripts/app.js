@@ -41,6 +41,7 @@ class App extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.paidInvoice = this.paidInvoice.bind(this);
     this.removeInvoice = this.removeInvoice.bind(this);
+    this.showCreate = this.showCreate.bind(this);
 }
 
 componentDidMount() {
@@ -137,11 +138,28 @@ handleChange(e) {
     })
   }
 
+  showCreate(e) {
+    e.preventDefault();
+    this.overlay.classList.toggle('show');
+    this.createUserModal.classList.toggle('show');
+  }
+
+  createuser(e) {
+    e.preventDefault();
+  }
 
 render() {
   return (
     <div>
+      <header>
       <h1>Get Money</h1>
+      <nav>
+      <a href="" onClick={this.showCreate}>Create Account</a>
+      </nav>
+      </header>
+
+      <div className="overlay" ref={ref => this.overlay = ref}></div>
+      
       <form action="" onSubmit={this.handleSubmit}>
         <input type="file" name="pdfUrl" ref={(ref) => { this.file = ref }} onChange={this.handleChange} />
         {/* <input type="submit" value="submit" /> */}
@@ -188,6 +206,26 @@ render() {
         })}
       </ul>
 
+      <div className="createUserModal modal" ref={ref => this.createUserModal = ref}> 
+        <div className="close">
+          <i className="fa fa-times"></i>
+        </div>
+        <form action="" onSubmit={this.createUser}>
+          <div>
+            <label htmlFor="createEmail">Email:</label>
+            <input type="text" name="createEmail" ref={ref =>this.createEmail =ref}/>
+          </div>
+          <div>
+            <label htmlFor="createPassword">Password:</label>
+            <input type="password" name="password" ref={ref => this.createPassword = ref}/>
+          </div>
+          <div>
+            <label htmlFor="confirmPassword">Confirm Password:</label>
+            <input type="password" name="confirmPassword" ref={ref => this.confirmPassword = ref} />
+          </div>
+          <input type="submit" value="Create"/>
+        </form>
+      </div>
     </div>
   )
   }
