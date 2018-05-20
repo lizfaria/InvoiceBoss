@@ -8,6 +8,11 @@ const FinalInvoice = (props) => {
             <ul>
                 <li>
                     <p> {props.clientName} - {props.amountDue} - {props.dateSent} - {props.paymentDate} </p>
+
+                    <a href="#0" onClick={() => this.openTab()}>OpenPdf</a>
+
+                    <button onClick={() => props.removeInvoice(props.firebaseKey)}
+                    >Remove X</button>
                 </li>
             </ul>
         </div>

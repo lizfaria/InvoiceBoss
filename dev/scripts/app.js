@@ -12,14 +12,14 @@ import firebase from 'firebase';
 
 // Initialize Firebase
 var config = {
-  apiKey: "AIzaSyDd4aY-M0s0Nzar4G5JFv_OUaPfW20gPMI",
-  authDomain: "invoiceboss.firebaseapp.com",
-  databaseURL: "https://invoiceboss.firebaseio.com",
-  projectId: "invoiceboss",
-  storageBucket: "",
-  messagingSenderId: "414613297676"
-};
-
+    apiKey: "AIzaSyDd4aY-M0s0Nzar4G5JFv_OUaPfW20gPMI",
+    authDomain: "invoiceboss.firebaseapp.com",
+    databaseURL: "https://invoiceboss.firebaseio.com",
+    projectId: "invoiceboss",
+    storageBucket: "invoiceboss.appspot.com",
+    messagingSenderId: "414613297676"
+  };
+  
 firebase.initializeApp(config);
 
 class App extends React.Component {
@@ -31,6 +31,7 @@ class App extends React.Component {
       dateSent: '',
       files: '',
       file:'',
+      pdf: '',
       selectedFile: '',
       uploads: '',
       records: [],
@@ -39,9 +40,7 @@ class App extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.paidInvoice = this.paidInvoice.bind(this);
-    this.handleFileUpload = this.handleFileUpload(this);
-    this.handleFileSelected = this.handleFileSelected(this);
-    
+    this.removeInvoice = this.removeInvoice.bind(this);
 }
 
 componentDidMount() {
@@ -84,36 +83,38 @@ handleSubmit(e) {
     clientName: this.state.clientName,
     amountDue: this.state.amountDue,
     dateSent: this.state.dateSent,
-    uploads: this.state.uploads,
+    pdfUrl: this.state.pdfUrl,
     paid: false
   };
 
- 
-
-
   const dbRef = firebase.database().ref('records');
   dbRef.push(records);
-
-  
-    // const filename = selectedFile.name;
-    // const Ref = firstorageebase.storage.ref('/invoicepdfs' + filename);
-    // var uploadTask = storageRef.put(selectedFile)
-
-
 
   this.setState({
     clientName: '',
     amountDue: '',
     dateSent: '',
-    uploads: ''
+    uploads: '',
+    pdfUrl:''
   });
 
+// PDF UPLOAD
+  const file = this.file.files[0];
+  console.log(file)
+  const pdfURL = this.state.value;
+  const storageRef = firebase.storage().ref('uploads');
+  const pdfUrl = storageRef.child(this.file.files[0].name);
+  
+  pdfUrl.put(file).then((snapshot) => {
+    pdfUrl.getDownloadURL().then((url) => {
+      console.log(url)
+      this.setState({
+        pdfUrl: url
+      })
+    })
+  });
 
-  console.log('clicked')
 };
-
-
-
 
 handleChange(e) {
     // update the state that matches the input user types in
@@ -123,28 +124,11 @@ handleChange(e) {
     });
   }
 
-  handleFileSelected(e) {
-    this.setState({
-      value: e.target.value
-    }); 
+  removeInvoice(keyToRemove) {
+    // in order to remove todo we need to know where in the db it lives
+    // using the parameter key `keyToRemove` we create a refernce to that location and call the `.remove()` method to it 
+    firebase.database().ref(`records/${keyToRemove}`).remove();
   }
-
-  handleFileUpload(e) {
-
-    const file = this.file.files[0];
-    console.log(this.file)
-    const pdfURL = this.state.value;
-    const storageRef = firebase.storage().ref('uploads');
-    const pdf = storageRef.child(this.file.files[0].name);
-    pdf.put(file).then((snapshot) => {
-      this.setState({
-        pdfURL: url
-      });
-    })
-    
-  }
-
-  
 
   paidInvoice(keyToUpdate, paid) {
     firebase.database().ref(`records/${keyToUpdate}`)
@@ -158,11 +142,10 @@ render() {
   return (
     <div>
       <h1>Get Money</h1>
-      <form action="#" onSubmit={this.handleFileUpload}>
-        <input type="file" name="uploads" ref={(ref)=> { this.file = ref }} onChange={this.handleFileSelected} />
-        <input type="submit" value="upload"/>
-      </form>
       <form action="" onSubmit={this.handleSubmit}>
+        <input type="file" name="pdfUrl" ref={(ref) => { this.file = ref }} onChange={this.handleChange} />
+        {/* <input type="submit" value="submit" /> */}
+
         <input type="text" name="clientName" onChange={this.handleChange} placeholder="Client Name" value={this.state.clientName} />
         <input type="text" name="amountDue" onChange={this.handleChange} placeholder="Amount Due" value={this.state.amountDue} />
         <input type="text" name="dateSent" onChange={this.handleChange} placeholder="Date Invoice sent" value={this.state.dateSent} />
@@ -179,8 +162,9 @@ render() {
             dateSent={recordItem.dateSent}
             clientName={recordItem.clientName}
             amountDue={recordItem.amountDue}
-            uploads={recordItem.uploads}
+            pdfUrl={recordItem.pdfUrl}
             firebaseKey={recordItem.key}
+            removeInvoice={this.removeInvoice}
             paidInvoice={this.paidInvoice}
             paymentDate={this.paymentDate} />
         })}
@@ -197,6 +181,7 @@ render() {
             amountDue={recordItem.amountDue}
             uploads={recordItem.uploads}
             firebaseKey={recordItem.key}
+            removeInvoice={this.removeInvoice}
             paidInvoice={this.paidInvoice}
             paymentDate={this.paymentDate}
             />
