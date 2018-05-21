@@ -1,30 +1,33 @@
 import React from 'react';
 
+
 class Invoice extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            paymentDate: '' 
+        paymentDate: ''
         }; 
     
 
     this.openTab = this.openTab.bind(this);
-    this.renderPdf = this.renderPdf.bind(this);
+    // this.renderPdf = this.renderPdf.bind(this);
     };
 
-    openTab(e) {
-        window.open(this.props.pdfUrl);
+    openTab() {
+        window.open(this.props.currentPdf);
     };
 
-    renderPdf(pdf) {
-        let markup = [];
-        if(this.props.pdfUrl !== undefined) {
-            markup.push (
-                <a href="#0" onClick={() => this.openTab()}>OpenPdf</a>
-            );
-        }
-        return markup;
-    };
+    // renderPdf(e) {
+    //     let markup = [];
+    //     if(this.props.currentPdf !== undefined) {
+    //         markup.push (
+    //             <a href="#0" onClick={() => this.openTab(this.props.currentPdf)}>OpenPdf</a>
+    //         );
+    //     } else (
+    //             <p>no pdf</p>
+    //     )
+    //     return markup;
+    // };
 
     render() {
         return (
@@ -33,16 +36,20 @@ class Invoice extends React.Component {
                 <ul>
                     <li className = { this.props.paid === true ? 'paid' : null }>
                         <p> {this.props.clientName} - {this.props.amountDue} - {this.props.dateSent} </p>
-                        {/* <input type="text" placeholder="payment date" name="paymentDate" onChange={this.handleChange} value={this.props.paymentDate}/> */}
+
+                        {/* <input type="text" placeholder="payment date" name="paymentDate" onChange= {this.props.handleChange(paymentDate)} value={this.props.paymentDate} /> */}
                         
                         <div>
-                        {this.renderPdf()}
+                        <a href="#0" onClick={() => this.openTab(this.props.currentPdf)}>OPEN PDF</a>
+                         {/* {this.renderPdf()} */}
                         </div>
 
-                        <input type="submit" value="paid" onClick={() => this.props.paidInvoice(this.props.firebaseKey, this.props.paid)} />
-                                        
-                            <button onClick={() => this.props.removeInvoice(this.props.firebaseKey)}
-                            >Remove X</button>
+                        <object data={this.props.currentPdf} type="pdf" width='400' height='400'></object>
+
+                        <input type="submit" value="paid" onClick={() => this.props.paidInvoice(this.props.firebaseKey, this.props.paid, this.state.paymentDate)} />
+                    
+                        <button onClick={() => this.props.removeInvoice(this.props.firebaseKey)}
+                        >X</button>
                     </li>
                 </ul>
                 </form>

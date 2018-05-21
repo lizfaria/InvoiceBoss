@@ -7,6 +7,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Invoice from './Invoice';
+import Login from './login'
 import FinalInvoice from './finalInvoice';
 import firebase from 'firebase';
 
@@ -31,6 +32,7 @@ class App extends React.Component {
       dateSent: '',
       files: '',
       file:'',
+      currentPdf:'',
       pdf: '',
       selectedFile: '',
       uploads: '',
@@ -41,7 +43,7 @@ class App extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.paidInvoice = this.paidInvoice.bind(this);
     this.removeInvoice = this.removeInvoice.bind(this);
-    this.showCreate = this.showCreate.bind(this);
+    // this.showCreate = this.showCreate.bind(this);
 }
 
 componentDidMount() {
@@ -84,7 +86,7 @@ handleSubmit(e) {
     clientName: this.state.clientName,
     amountDue: this.state.amountDue,
     dateSent: this.state.dateSent,
-    pdfUrl: this.state.pdfUrl,
+    currentPdf: this.state.currentPdf,
     paid: false
   };
 
@@ -95,22 +97,25 @@ handleSubmit(e) {
     clientName: '',
     amountDue: '',
     dateSent: '',
-    uploads: '',
-    pdfUrl:''
+    // currentPdf: ''
   });
 
 // PDF UPLOAD
   const file = this.file.files[0];
   console.log(file)
   const pdfURL = this.state.value;
-  const storageRef = firebase.storage().ref('uploads');
+  
+  const storageRef = firebase.storage().ref();
   const pdfUrl = storageRef.child(this.file.files[0].name);
+  this.setState({
+    currentPdf:''
+  })
   
   pdfUrl.put(file).then((snapshot) => {
     pdfUrl.getDownloadURL().then((url) => {
       console.log(url)
       this.setState({
-        pdfUrl: url
+        currentPdf: url
       })
     })
   });
@@ -138,15 +143,15 @@ handleChange(e) {
     })
   }
 
-  showCreate(e) {
-    e.preventDefault();
-    this.overlay.classList.toggle('show');
-    this.createUserModal.classList.toggle('show');
-  }
+  // showCreate(e) {
+  //   e.preventDefault();
+  //   this.overlay.classList.toggle('show');
+  //   this.createUserModal.classList.toggle('show');
+  // }
 
-  createuser(e) {
-    e.preventDefault();
-  }
+  // createuser(e) {
+  //   e.preventDefault();
+  // }
 
 render() {
   return (
@@ -160,38 +165,39 @@ render() {
 
       <div className="overlay" ref={ref => this.overlay = ref}></div>
       
-      <form action="" onSubmit={this.handleSubmit}>
-        <input type="file" name="pdfUrl" ref={(ref) => { this.file = ref }} onChange={this.handleChange} />
+      <form action="" onSubmit={this.handleSubmit} className="form-upload">
+
+       
+        <input type="file" ref={(ref) => { this.file = ref }} onChange={this.handleChange} />
+       
         {/* <input type="submit" value="submit" /> */}
 
         <input type="text" name="clientName" onChange={this.handleChange} placeholder="Client Name" value={this.state.clientName} />
         <input type="text" name="amountDue" onChange={this.handleChange} placeholder="Amount Due" value={this.state.amountDue} />
-        <input type="text" name="dateSent" onChange={this.handleChange} placeholder="Date Invoice sent" value={this.state.dateSent} />
+        <input type="date" name="dateSent" onChange={this.handleChange} placeholder="Date Invoice sent" value={this.state.dateSent} />
+
         <input type="submit" value="add to records" />
       </form>
       
       <h2>Unpaid Invoices</h2>
-      <ul>
         {/* `.map()` method iterates over records, and for each one of them, return record item componenet. */}
         {this.state.records.map((recordItem) => {
-          // here we pass and props to our TodoItem component anything that we want 
+          // here we pass and props to our record item component anything that we want 
           return <Invoice
             key={recordItem.key}
             dateSent={recordItem.dateSent}
             clientName={recordItem.clientName}
             amountDue={recordItem.amountDue}
-            pdfUrl={recordItem.pdfUrl}
+            currentPdf={recordItem.currentPdf}
             firebaseKey={recordItem.key}
             removeInvoice={this.removeInvoice}
             paidInvoice={this.paidInvoice}
             paymentDate={this.paymentDate} />
         })}
-      </ul>
+    
       <h2>Paid Invoices</h2>
       <ul>
-        {/* `.map()` method iterates over records, and for each one of them, return record item componenet. */}
         {this.state.paidRecords.map((recordItem) => {
-          // here we pass and props to our TodoItem component anything that we want 
           return <FinalInvoice
             key={recordItem.key}
             dateSent={recordItem.dateSent}
@@ -205,30 +211,9 @@ render() {
             />
         })}
       </ul>
-
-      <div className="createUserModal modal" ref={ref => this.createUserModal = ref}> 
-        <div className="close">
-          <i className="fa fa-times"></i>
-        </div>
-        <form action="" onSubmit={this.createUser}>
-          <div>
-            <label htmlFor="createEmail">Email:</label>
-            <input type="text" name="createEmail" ref={ref =>this.createEmail =ref}/>
-          </div>
-          <div>
-            <label htmlFor="createPassword">Password:</label>
-            <input type="password" name="password" ref={ref => this.createPassword = ref}/>
-          </div>
-          <div>
-            <label htmlFor="confirmPassword">Confirm Password:</label>
-            <input type="password" name="confirmPassword" ref={ref => this.confirmPassword = ref} />
-          </div>
-          <input type="submit" value="Create"/>
-        </form>
+        <Login />
       </div>
-    </div>
-  )
-  }
+      )
 }
-
+}
 ReactDOM.render(<App />, document.getElementById('app'));

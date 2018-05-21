@@ -1,21 +1,18 @@
 import React from 'react';
 import Invoice from './Invoice';
+import App from './app';
 
 
 const FinalInvoice = (props) => {
     return (
-        <div>
-            <ul>
-                <li>
-                    <p> {props.clientName} - {props.amountDue} - {props.dateSent} - {props.paymentDate} </p>
+            <li className="paidInvoice__listItem">
+                <p className="paragraph"> {props.clientName} - {props.amountDue} - {props.dateSent} </p>
+                
+            <a className="link" href="#0" onClick={() => this.openTab(this.props.currentPdf)}>OpenPdf</a>
 
-                    <a href="#0" onClick={() => this.openTab()}>OpenPdf</a>
-
-                    <button onClick={() => props.removeInvoice(props.firebaseKey)}
-                    >Remove X</button>
-                </li>
-            </ul>
-        </div>
+            <button className="button" onClick={() => props.removeInvoice(props.firebaseKey)}
+                >X</button>
+            </li>
     )
 };
 
