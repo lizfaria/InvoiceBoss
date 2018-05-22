@@ -2,7 +2,27 @@
 @import '_typography.scss';
 
 body {
-background-color: $background;
+background-color: $white;
+}
+
+.wrapper {
+    max-width:500px;
+    margin: 0 auto;
+    position: relative;
+    background-color:$background;
+    box-shadow: 0px 0px 11px 1px black;
+}
+
+header {
+    background-image: url('https://www.biography.com/.image/c_limit%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1400/MTI1NDg4NTg2MDAxODA1Mjgy/bob-ross-promojpg.jpg');
+    background-size: cover;
+    height: 40vh;
+}
+
+nav {
+    width: 100%;
+    display:flex;
+    justify-content:flex-end;
 }
 
 #file-upload {
@@ -17,20 +37,90 @@ border: 1px solid #ccc;
     cursor: pointer;
 }
 .form-upload {
-    max-width:500px;
+    margin: 0 auto;
+    max-width:70%;
 input {
     width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
+    margin: 8px auto;
 
     &[type=file] {
 
 
     }
-
+    &[type=submit], &[type=text], &[type=date] {
+        padding: 5px 20px;
+    }
     &:focus {
         border: 1px solid $red;
     }
 
 }
 }
+
+#paidInvoices, #recordz {
+    display: grid;
+    grid-template-rows:repeat(3, 33%);
+    grid-template-columns:repeat(2, 50%);
+
+}
+
+    .client-name {
+        justify-self:start;
+    }
+
+    .amount-due {
+        justify-self:end;
+    }
+
+    #paidInvoices .amount-due {
+        text-decoration: line-through;
+    }
+
+
+    .date-sent {
+        margin: 0;
+    }
+
+    .attachment {
+        justify-self: start;
+        text-decoration: none;
+        text-align:left;
+        width:100%;
+        grid-column-start:1;
+        grid-row-start:3;
+
+        img {
+        transform: rotate(90deg);
+        transition: all .3s ease-in-out;
+        padding: 0;
+        margin: -10px, -2px;
+            &:hover {
+            transform:rotate(100deg);
+            }
+        }
+    }
+
+.paid-button, .remove-button {
+        justify-self: end;
+        -webkit-appearance: none;
+        background-color:transparent;
+        text-align:center;
+        width:100px;
+        height:40px;
+        border:1px solid $red;
+        transition: all .3s ease-in;
+        box-shadow: 0 1px 1px 1px;
+         color:$red;
+        
+        &:hover {
+            background-color:$white;
+            color:$red;
+        }
+}
+
+ .remove-button {
+        margin-top:10px;
+       
+        grid-row-start:3;
+        
+    }

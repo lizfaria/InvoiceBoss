@@ -13,7 +13,7 @@ class Invoice extends React.Component {
     // this.renderPdf = this.renderPdf.bind(this);
     };
 
-    openTab() {
+    openTab(e) {
         window.open(this.props.currentPdf);
     };
 
@@ -33,25 +33,29 @@ class Invoice extends React.Component {
         return (
             <div>
                 <form>
-                <ul>
-                    <li className = { this.props.paid === true ? 'paid' : null }>
-                        <p> {this.props.clientName} - {this.props.amountDue} - {this.props.dateSent} </p>
+                
+                    <li id="recordz" className = { this.props.paid === true ? 'paid' : null }>
+                        <h3 className="client-name"> {this.props.clientName} </h3>
+                        <h3 className="amount-due"> {this.props.amountDue} </h3>
+                        <p className="paragraph date-sent"> {this.props.dateSent} </p>
 
                         {/* <input type="text" placeholder="payment date" name="paymentDate" onChange= {this.props.handleChange(paymentDate)} value={this.props.paymentDate} /> */}
                         
-                        <div>
-                        <a href="#0" onClick={() => this.openTab(this.props.currentPdf)}>OPEN PDF</a>
+                        
+                        <a className="attachment" href="#0" onClick={() => this.openTab(this.props.currentPdf)}>
+                        <img src="public/images/attach_file.png" alt=""/>
+                        </a>
                          {/* {this.renderPdf()} */}
-                        </div>
+                        
 
-                        <object data={this.props.currentPdf} type="pdf" width='400' height='400'></object>
+                        {/* <object data={this.props.currentPdf} type="pdf" width='400' height='100'></object> */}
 
-                        <input type="submit" value="paid" onClick={() => this.props.paidInvoice(this.props.firebaseKey, this.props.paid, this.state.paymentDate)} />
+                        <input className="paid-button" type="submit" value="paid" onClick={() => this.props.paidInvoice(this.props.firebaseKey, this.props.paid, this.state.paymentDate)} />
                     
-                        <button onClick={() => this.props.removeInvoice(this.props.firebaseKey)}
-                        >X</button>
+                        <button className="remove-button" onClick={() => this.props.removeInvoice(this.props.firebaseKey)}
+                        >x</button>
                     </li>
-                </ul>
+                
                 </form>
             </div>
         )

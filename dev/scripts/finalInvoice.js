@@ -2,36 +2,33 @@ import React from 'react';
 import Invoice from './Invoice';
 import App from './app';
 
-
-const FinalInvoice = (props) => {
-    return (
-            <li className="paidInvoice__listItem">
-                <p className="paragraph"> {props.clientName} - {props.amountDue} - {props.dateSent} </p>
-                
-            <a className="link" href="#0" onClick={() => this.openTab(this.props.currentPdf)}>OpenPdf</a>
-
-            <button className="button" onClick={() => props.removeInvoice(props.firebaseKey)}
-                >X</button>
-            </li>
-    )
-};
-
 // class FinalInvoice extends React.Component {
-//     render() {
-//         return (
-//             <div>
-//                 {animals.map((animal, index, orgArray) => {
-//                     return (
-//                         <div className="pet" key={index}>
-//                             <p>{animal.name}</p>
-//                             <img src={animal.picture} alt="" />
-//                         </div>
-//                     )
-//                 })}
-//             </div>
-//         );
-//     }
-// }
+    // constructor(props) {
+    //     super(props)
+    //     this.state = {
+          
+    //     }
+    // }
+     // render ()
+const FinalInvoice = (props) => {
+
+        return (
+                <li id="paidInvoices">
+                    <h3 className="client-name"> {props.clientName} </h3>
+                    <h3 className="amount-due"> {props.amountDue} </h3>
+                    <p className="date-sent">{props.dateSent} </p>
+                        
+                    <a className="attachment" href="#0" onClick={() => props.openTab(props.currentPdf)}>
+                        <img src="public/images/attach_file.png" alt="" />
+                    </a>
+
+                    <button className="remove-button" onClick={() => props.removeInvoice(props.firebaseKey)}
+                        >X</button>
+                </li>
+        
+        )
+    }
+
 
 
 export default FinalInvoice;

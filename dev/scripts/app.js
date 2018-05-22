@@ -6,8 +6,10 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Header from './header';
+import Footer from './footer';
 import Invoice from './Invoice';
-import Login from './login'
+// import Login from './login'
 import FinalInvoice from './finalInvoice';
 import firebase from 'firebase';
 
@@ -43,7 +45,7 @@ class App extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.paidInvoice = this.paidInvoice.bind(this);
     this.removeInvoice = this.removeInvoice.bind(this);
-    // this.showCreate = this.showCreate.bind(this);
+    this.showCreate = this.showCreate.bind(this);
 }
 
 componentDidMount() {
@@ -105,7 +107,7 @@ handleSubmit(e) {
   console.log(file)
   const pdfURL = this.state.value;
   
-  const storageRef = firebase.storage().ref();
+  const storageRef = firebase.storage().ref('uploads');
   const pdfUrl = storageRef.child(this.file.files[0].name);
   this.setState({
     currentPdf:''
@@ -143,11 +145,11 @@ handleChange(e) {
     })
   }
 
-  // showCreate(e) {
-  //   e.preventDefault();
-  //   this.overlay.classList.toggle('show');
-  //   this.createUserModal.classList.toggle('show');
-  // }
+  showCreate(e) {
+    e.preventDefault();
+    this.overlay.classList.toggle('show');
+    this.createUserModal.classList.toggle('show');
+  }
 
   // createuser(e) {
   //   e.preventDefault();
@@ -155,16 +157,11 @@ handleChange(e) {
 
 render() {
   return (
-    <div>
-      <header>
-      <h1>Get Money</h1>
-      <nav>
-      <a href="" onClick={this.showCreate}>Create Account</a>
-      </nav>
-      </header>
+    <div className="wrapper">
+    < Header />
 
       <div className="overlay" ref={ref => this.overlay = ref}></div>
-      
+      <h2>Add Invoice to Records</h2>    
       <form action="" onSubmit={this.handleSubmit} className="form-upload">
 
        
@@ -180,6 +177,7 @@ render() {
       </form>
       
       <h2>Unpaid Invoices</h2>
+      <ul>  
         {/* `.map()` method iterates over records, and for each one of them, return record item componenet. */}
         {this.state.records.map((recordItem) => {
           // here we pass and props to our record item component anything that we want 
@@ -194,9 +192,9 @@ render() {
             paidInvoice={this.paidInvoice}
             paymentDate={this.paymentDate} />
         })}
-    
+      </ul>
       <h2>Paid Invoices</h2>
-      <ul>
+        <ul>
         {this.state.paidRecords.map((recordItem) => {
           return <FinalInvoice
             key={recordItem.key}
@@ -210,8 +208,9 @@ render() {
             paymentDate={this.paymentDate}
             />
         })}
-      </ul>
-        <Login />
+     </ul>
+        {/* <Login /> */}
+        <Footer />
       </div>
       )
 }
