@@ -9,7 +9,7 @@ background-color: $white;
     max-width:500px;
     margin: 0 auto;
     position: relative;
-    background-color:$background;
+    background-color: #FAF0E6;
     box-shadow: 0px 0px 11px 1px black;
 }
 
@@ -57,10 +57,16 @@ input {
 }
 }
 
+.info {
+    border-bottom: 1px solid black;
+}
+
 #paidInvoices, #recordz {
     display: grid;
-    grid-template-rows:repeat(3, 33%);
-    grid-template-columns:repeat(2, 50%);
+    grid-template-rows: 1fr 1fr;;
+    grid-template-columns:3fr 1fr 3fr;
+    height:100px;
+    margin-top:40px;
 
 }
 
@@ -70,6 +76,8 @@ input {
 
     .amount-due {
         justify-self:end;
+        grid-row-start: 1;
+        grid-column-start:3;
     }
 
     #paidInvoices .amount-due {
@@ -79,15 +87,24 @@ input {
 
     .date-sent {
         margin: 0;
+        grid-row-start: 1;
+        grid-column-start: 2;
+        text-align:center;
+        line-height:1.5rem;
+        grid-gap:0;
     }
 
     .attachment {
-        justify-self: start;
+         grid-row-start: 2;
+    grid-column-start: 1;
+    margin-top:0;
+        justify-self: end;
         text-decoration: none;
-        text-align:left;
+        text-align:right;
         width:100%;
-        grid-column-start:1;
-        grid-row-start:3;
+        grid-column-start:3;
+        grid-row-start:2;
+        margin-top:-15px;
 
         img {
         transform: rotate(90deg);
@@ -101,13 +118,13 @@ input {
     }
 
 .paid-button, .remove-button {
-        justify-self: end;
+        justify-self: start;
         -webkit-appearance: none;
         background-color:transparent;
-        text-align:center;
-        width:100px;
-        height:40px;
-        border:1px solid $red;
+        text-align:left;
+        display:inline;
+        height:30px;
+        // border:1px solid $black;
         transition: all .3s ease-in;
         box-shadow: 0 1px 1px 1px;
          color:$red;
@@ -115,12 +132,17 @@ input {
         &:hover {
             background-color:$white;
             color:$red;
+             
         }
 }
-
+.paid-button {
+    // grid-row-start: 2;
+    // grid-column-start: 1;
+    // margin-top:0;
+}
  .remove-button {
-        margin-top:10px;
-       
-        grid-row-start:3;
+        margin-top:0;
+        // grid-row-start:2;
+        // grid-column-start:2
         
     }

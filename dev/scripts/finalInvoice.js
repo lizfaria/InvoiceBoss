@@ -11,7 +11,6 @@ import App from './app';
     // }
      // render ()
 const FinalInvoice = (props) => {
-
         return (
                 <li id="paidInvoices">
                     <h3 className="client-name"> {props.clientName} </h3>

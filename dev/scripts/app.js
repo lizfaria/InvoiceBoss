@@ -46,6 +46,8 @@ class App extends React.Component {
     this.paidInvoice = this.paidInvoice.bind(this);
     this.removeInvoice = this.removeInvoice.bind(this);
     this.showCreate = this.showCreate.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
+    
 }
 
 componentDidMount() {
@@ -101,8 +103,9 @@ handleSubmit(e) {
     dateSent: '',
     // currentPdf: ''
   });
-
+};
 // PDF UPLOAD
+  handleUpload() {  
   const file = this.file.files[0];
   console.log(file)
   const pdfURL = this.state.value;
@@ -113,7 +116,7 @@ handleSubmit(e) {
     currentPdf:''
   })
   
-  pdfUrl.put(file).then((snapshot) => {
+ pdfUrl.put(file).then((snapshot) => {
     pdfUrl.getDownloadURL().then((url) => {
       console.log(url)
       this.setState({
@@ -145,6 +148,7 @@ handleChange(e) {
     })
   }
 
+  
   showCreate(e) {
     e.preventDefault();
     this.overlay.classList.toggle('show');
@@ -167,11 +171,13 @@ render() {
        
         <input type="file" ref={(ref) => { this.file = ref }} onChange={this.handleChange} />
        
-        {/* <input type="submit" value="submit" /> */}
+        <button onClick={this.handleUpload}>upload</button> 
 
-        <input type="text" name="clientName" onChange={this.handleChange} placeholder="Client Name" value={this.state.clientName} />
-        <input type="text" name="amountDue" onChange={this.handleChange} placeholder="Amount Due" value={this.state.amountDue} />
-        <input type="date" name="dateSent" onChange={this.handleChange} placeholder="Date Invoice sent" value={this.state.dateSent} />
+        
+          <input type="text" name="clientName" onChange={this.handleChange} placeholder="Client Name" value={this.state.clientName} />
+          <input type="text" name="amountDue" onChange={this.handleChange} placeholder="Amount Due" value={this.state.amountDue} />
+          <input type="date" name="dateSent" onChange={this.handleChange} placeholder="Date Invoice sent" value={this.state.dateSent} />
+      
 
         <input type="submit" value="add to records" />
       </form>
@@ -190,7 +196,8 @@ render() {
             firebaseKey={recordItem.key}
             removeInvoice={this.removeInvoice}
             paidInvoice={this.paidInvoice}
-            paymentDate={this.paymentDate} />
+            paymentDate={this.paymentDate}
+            />
         })}
       </ul>
       <h2>Paid Invoices</h2>
@@ -202,10 +209,12 @@ render() {
             clientName={recordItem.clientName}
             amountDue={recordItem.amountDue}
             uploads={recordItem.uploads}
+            currentPdf={recordItem.currentPdf}
             firebaseKey={recordItem.key}
             removeInvoice={this.removeInvoice}
             paidInvoice={this.paidInvoice}
             paymentDate={this.paymentDate}
+            
             />
         })}
      </ul>

@@ -35,10 +35,11 @@ class Invoice extends React.Component {
                 <form>
                 
                     <li id="recordz" className = { this.props.paid === true ? 'paid' : null }>
-                        <h3 className="client-name"> {this.props.clientName} </h3>
-                        <h3 className="amount-due"> {this.props.amountDue} </h3>
-                        <p className="paragraph date-sent"> {this.props.dateSent} </p>
-
+                   
+                            <h3 className="client-name"> {this.props.clientName} </h3>
+                            <h3 className="amount-due"> {this.props.amountDue} </h3>
+                            <p className="paragraph date-sent"> {this.props.dateSent} </p>
+                       
                         {/* <input type="text" placeholder="payment date" name="paymentDate" onChange= {this.props.handleChange(paymentDate)} value={this.props.paymentDate} /> */}
                         
                         
@@ -50,7 +51,8 @@ class Invoice extends React.Component {
 
                         {/* <object data={this.props.currentPdf} type="pdf" width='400' height='100'></object> */}
 
-                        <input className="paid-button" type="submit" value="paid" onClick={() => this.props.paidInvoice(this.props.firebaseKey, this.props.paid, this.state.paymentDate)} />
+                        <input className="paid-button" type="submit" value=
+                        "paid" onClick={() => this.props.paidInvoice(this.props.firebaseKey, this.props.paid, this.state.paymentDate)} />
                     
                         <button className="remove-button" onClick={() => this.props.removeInvoice(this.props.firebaseKey)}
                         >x</button>

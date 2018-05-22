@@ -6,7 +6,7 @@ const Header = (props) => {
             <nav>
                 <a href="" onClick={props.showCreate}>Create Account</a>
             </nav>
-            <h1>Bill Ross</h1>
+            <h1>Bob Ross</h1>
             <h3> Invoice Tracker </h3>
         </header>
     )
